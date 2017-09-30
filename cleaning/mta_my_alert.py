@@ -61,8 +61,8 @@ recent_subway_alerts['estimated'] = predicted_values
 
 
 # over-write values for 'Test' & 'Update'
-recent_subway_alerts[recent_subway_alerts['update'] == True]['estimated'] = 'update'
-recent_subway_alerts[recent_subway_alerts['test'] == True]['estimated'] = 'test'
+recent_subway_alerts.loc[recent_subway_alerts['update'] == True, 'estimated'] = 'update'
+recent_subway_alerts.loc[recent_subway_alerts['test'] == True, 'estimated'] = 'test'
 
 
 # save classified data for analysis
