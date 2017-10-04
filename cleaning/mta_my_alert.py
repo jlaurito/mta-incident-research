@@ -60,8 +60,7 @@ predicted_values = decision_tree.predict(features.drop('hex_x', axis=1))
 recent_subway_alerts['estimated'] = predicted_values
 
 
-# over-write values for 'Test' & 'Update'
-recent_subway_alerts.loc[recent_subway_alerts['update'] == True, 'estimated'] = 'update'
+# over-write values for 'Test'
 recent_subway_alerts.loc[recent_subway_alerts['test'] == True, 'estimated'] = 'test'
 
 
