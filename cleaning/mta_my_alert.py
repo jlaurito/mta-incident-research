@@ -37,11 +37,11 @@ features = recent_subway_alerts.drop(
 
 # create sample for manual classification where there are multiple potential classes
 # excluding updates as noise. Add time to name to prevent over-writing work
-manual_sample = recent_subway_alerts[
-    (recent_subway_alerts['update'] == False)
-].sample(1000)
-file_name = '../data/mta_manually_classified_' + datetime.now().strftime('%H-%M-%S') + '.csv'
-manual_sample.to_csv(file_name, index=False)
+# manual_sample = recent_subway_alerts[
+#     (recent_subway_alerts['update'] == False)
+# ].sample(1000)
+# file_name = '../data/mta_manually_classified_' + datetime.now().strftime('%H-%M-%S') + '.csv'
+# manual_sample.to_csv(file_name, index=False)
 
 # load back manual sample once done to build classifier
 classified = pd.read_csv('../data/mta_manually_classified_08-08-41.csv', encoding='latin1')
@@ -51,8 +51,9 @@ classified = pd.read_csv('../data/mta_manually_classified_08-08-41.csv', encodin
 y = classified['classified']
 x = classified.drop(['classified','count', 'hex_x', 'title','body', 
                     'msg', 'system', 'time', 'hex_y'], axis=1)
-decision_tree = tree.DecisionTreeClassifier()
+decision_tree = tree.DecisionTreeClassifier(max_depth = 7, min_samples_split=5)
 decision_tree.fit(x, y)
+tree.export_graphviz(decision_tree,out_file='../visualizations/tree.dot') 
 
 
 # write results to predicted values
@@ -63,6 +64,6 @@ recent_subway_alerts['estimated'] = predicted_values
 # over-write values for 'Test'
 recent_subway_alerts.loc[recent_subway_alerts['test'] == True, 'estimated'] = 'test'
 
-
+# recent_subway_alerts.sample(1000).to_csv( '../data/manual_assesment' + datetime.now().strftime('%H-%M-%S') + '.csv',index=False)
 # save classified data for analysis
-recent_subway_alerts.to_csv( '../data/my_mta_data_for_analysis.csv',index=False)
+#recent_subway_alerts.to_csv( '../data/my_mta_data_for_analysis.csv',index=False)
